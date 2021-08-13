@@ -38,11 +38,6 @@ public class LoginNoRedirectController {
     protected final LoginHandler loginHandler;
     protected final ApplicationEventPublisher eventPublisher;
 
-    /**
-     * @param authenticator  {@link Authenticator} collaborator
-     * @param loginHandler   A collaborator which helps to build HTTP response depending on success or failure.
-     * @param eventPublisher The application event publisher
-     */
     public LoginNoRedirectController(Authenticator authenticator,
                            LoginHandler loginHandler,
                            ApplicationEventPublisher eventPublisher) {
@@ -51,11 +46,6 @@ public class LoginNoRedirectController {
         this.eventPublisher = eventPublisher;
     }
 
-    /**
-     * @param usernamePasswordCredentials An instance of {@link UsernamePasswordCredentials} in the body payload
-     * @param request                     The {@link HttpRequest} being executed
-     * @return An AccessRefreshToken encapsulated in the HttpResponse or a failure indicated by the HTTP status
-     */
     @Consumes({MediaType.APPLICATION_FORM_URLENCODED, MediaType.APPLICATION_JSON})
     @Post
     public Single<MutableHttpResponse<?>> login(@Valid @Body UsernamePasswordCredentials usernamePasswordCredentials, HttpRequest<?> request) {
@@ -65,7 +55,7 @@ public class LoginNoRedirectController {
             if (authenticationResponse.isAuthenticated() && authenticationResponse.getUserDetails().isPresent()) {
                 UserDetails userDetails = authenticationResponse.getUserDetails().get();
                 eventPublisher.publishEvent(new LoginSuccessfulEvent(userDetails));
-                return loginHandler.loginSuccess(userDetails, request).status(HttpStatus.OK).body("Hello");
+                return loginHandler.loginSuccess(userDetails, request).status(HttpStatus.OK);
             } else {
                 eventPublisher.publishEvent(new LoginFailedEvent(authenticationResponse));
                 return loginHandler.loginFailed(authenticationResponse, request);
