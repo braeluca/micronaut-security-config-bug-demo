@@ -1,4 +1,12 @@
 micronaut:
+  server:
+    dualProtocol: true
+    port: 8080
+    host: 0.0.0.0
+  ssl:
+    enabled: true
+    port: 8181
+    build-self-signed: true
   application:
     name: micronautsecurityconfigbugdemo
   security:
@@ -10,7 +18,6 @@ micronaut:
       jwt:
         cookie:
           cookie-same-site: strict
-          cookie-secure: true
         signatures:
           secret:
             generator:
