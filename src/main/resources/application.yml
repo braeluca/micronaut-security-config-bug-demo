@@ -1,0 +1,18 @@
+micronaut:
+  application:
+    name: micronautsecurityconfigbugdemo
+  security:
+    authentication: cookie
+    endpoints:
+      login:
+        enabled: false
+    token:
+      jwt:
+        cookie:
+          cookie-same-site: strict
+          cookie-secure: true
+        signatures:
+          secret:
+            generator:
+              secret: pleaseChangeThisSecretForANewOne
+              jws-algorithm: HS256
